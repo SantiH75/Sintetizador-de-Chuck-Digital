@@ -5,7 +5,7 @@ Integrantes:
 - Paula Quiroga Romero
 - Jesús Sanchez Cobos
 - Sergio Daniel Ávila Quintana
-- Santiago Herrera Acuña
+- Santiago Herrera Acuña.
 
 En este repositorio se encuentra el proceso de diseño e implementación de un modulo digital que simula el funcionamiento de un trombón a través de sistemas digitales usando dispositivos como la FPGA y sistemas de comunicaiones como la ESP32.
 
