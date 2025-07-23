@@ -15,6 +15,10 @@ Par el desarrollo de los instrumentos musicales, pasando primero por procesos de
 
 En el caso particular de los instrumentos de viento, estos aprovechan un flujo de aire que vibra dentro del instrumento, que cambia su afinación según los pistones que estén presionados, para finalmente ser amplificado; está lógica puede ser "simulada" en un sistema digital como se verá a continuación.
 
+<p align="center">
+<img width="444" height="259" alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/Trompeta-Hal-Gatewood-Unsplash.jpg" />
+</p>
+
 # Objetivos 
 
 - Entender el comportamiento modular en el diseño de un sistema digital a través de la implementación de un instruemnto que tenga como base circuito lógicos digitales para modificaci´´on tonal de un soonido.
