@@ -45,7 +45,7 @@ En el caso particular de los instrumentos de viento, estos aprovechan un flujo d
 - **Sistema de comunicación:**
   - Se entregan ambos valores de los modulos anteriores a través de transmisión por UART.
  
-## Requerimientos no funcionales:**
+## Requerimientos no funcionales:
 
 - **Modularidad:** Las funcionalidades de selección estan separadas entre sí, de modo que, una no afecta al desemepño de la otra.
 
