@@ -81,6 +81,21 @@ Los pistones pueden ser simulados a través de un _multiplexor_, basado en selec
 <img width="444" height="259" alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/multiplexor.png" />
 </p>
 
+| Pulsador 1    | Pulsador 2 | Pulsador 3 | Nota reproducida|
+|---------------|------------|------------|-----------------|
+| 0             |0           |0           |Do alto          |
+| 0             |0           |1           |Do               |
+| 0             |1           |0           |Re               |
+| 0             |1           |1           |Fa               |
+| 1             |0           |0           |Mi               |
+| 1             |0           |1           |Sol              |
+| 1             |1           |0           |La               |
+| 1             |1           |1           |Si               |
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/IMG-20250722-WA0013.jpg" />
+</p>
+
 A continuación, a través de un Diagrama ASM, se sintetiza las combinaciones determinadas para cada nota, además, de su respectivo diagrama de maquina de estados finitos.
 
 <p align="center">
@@ -94,3 +109,59 @@ A continuación, a través de un Diagrama ASM, se sintetiza las combinaciones de
 ## Contador de pulsos
 
 ### Caracterización del sistema físico
+
+Para simular la boquilla de la trompeta, se utiliza una aspa que tiene un iman en uno de sus extremos, que corresponde luego a un circuito con un sensor de Efecto Hall, que funciona como circuito abierto al estar en la cercanía del imán, esto con el final de generar una discontinuidad cada vez que este complete una revolución: Entrega una señal cuadarda con cierta frecuencia. AL montar y probar el sistema, se determina que la frecuencia máxima que alcanza es de 50 Hz, además de brondar una señal de rápido tiempo de bajada, por lo cuál, no se considera necearia la determinación de un tiempo de mantenimiento.
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/Sensor_efecto_hall.PNG" />
+</p>
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/IMG-20250723-WA0006.jpg" />
+</p>
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/IMG-20250723-WA0007.jpg" />
+</p>
+
+
+Con el sistema _transductor_ físico ya implemetado, se busca establecer una sería de límites en el número de pulsos en cierto intervalo de tiempo, para determinar la octava a utilizar.
+
+> Una octava, en el contexto de la música, es una nota musical con un afrecuencia mínima de 2:1 (o vicerevrsa) referente a la otra. A efectos de percepción, la nota es la misma, pero más águda o grave.
+
+Para el sistema de conteo se propone, esencialemnte, dos módulos:
+
+- Un temporizador
+- Un contador
+
+El primero, fijado en un segundo, permite limitar el tiempo de conteo (o ciclo) sobre el cual se efectua el conteo. Al llegar al timempo determinado, este llega nuevamente a cero, y se repite indefinidamente. El segundo, en cada ciclo, efectua un incremento cuando el nivel de la señal recibida llega a bajo (Una vuelta de la aspa). Estos dependen del pulso de reloj de la FPGA, de mayor velocidad comparado a la frecuencia máxima alcanzada, por lo que no se preveén problemas de discontinuidad en el conteo.
+
+Al llegar al límite del temporizador, se definen los límites a partir de la frecuencia máxima. Como se determinó en la caraterización, el máximo de vueltas que alcanza la aspa son de 50 por segundo, por lo que se definen 4 intervalos de octava, con los siguiente sidentificadores:
+
+| Pulsos contados    | Código identificador |
+|--------------------|----------------------|
+| 0 a 15 pulsos      | 2                    |
+| 16 a 30 pulsos     | 3                    |
+| Más de 30 pulsos   | 4                    |
+
+Luego de ese proceso, se guarda el identificador de octava, y se envia por UART; tanto el contador como el temporizador va a 0. A continuación, se muestra el diagrama ASM que sintetiza el proceso con su respectivo diagrama de máquina de estados finitos.
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/Diagrama_ASM_contador_de_pulsos.drawio%20(1).png" />
+</p>
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/Diagrama_MEF_contador_de_pulsos.drawio.png" />
+</p>
+
+# Diseño de prototipo
+
+Para el desarrollo integral del proyecto, se diseñó, modeló e implementó un prototipo utilizando impresión 3D. Este diseño tiene como propósito proteger y almacenar los componentes de hardware utilizados en la aplicación: la hélice encargada de captar los pulsos, los botones que generan un código binario traducido en notas musicales, las tarjetas de desarrollo (ESP32 y FPGA) y el sistema de alimentación, compuesto por una batería externa (power bank).
+
+Inicialmente, el modelo fue concebido como una caja dividida en tres secciones: alimentación, sensores y sistema de control del circuito. No obstante, con el objetivo de optimizar el espacio y mejorar la funcionalidad, se rediseñó en dos secciones: una destinada a la alimentación, y otra en forma de escalón que permite una conexión eficiente entre la ESP32 y la FPGA, facilitando además el acceso a los pines necesarios para conectar tanto el módulo de la hélice como el de los pulsadores.
+
+Adicionalmente, se incorporaron dos elementos estéticos en la parte frontal y posterior del prototipo, con el fin de simular la forma de una trompeta real y así reforzar la identidad musical del dispositivo.
+
+<p align="center">
+<img alt="image" src="https://github.com/SantiH75/Sintetizador-de-Chuck-Digital/blob/main/Trompeta_/IMG-20250723-WA0001.jpg" />
+</p>
