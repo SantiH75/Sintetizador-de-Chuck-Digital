@@ -11,7 +11,7 @@ En este repositorio se encuentra el proceso de diseño e implementación de un m
 
 # Introducción
 
-
+Par el desarrollo de los instrumentos musicales, pasando primero por procesos de generación de sonidos analógicos, era necesario un
 
 # Objetivos 
 
